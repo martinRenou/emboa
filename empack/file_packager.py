@@ -53,12 +53,13 @@ def download_and_setup_emsdk(emsdk_version=None):
             check=True,
         )
 
-        for _file in [
-            "emsdk",
-            Path("upstream") / "emscripten" / "emcc",
-            Path("upstream") / "emscripten" / "emar",
-            Path("upstream") / "emscripten" / "em++"
-        ]:
+        # It's unclear why we need to do this
+        exec_files = [
+            Path("upstream") / "emscripten" / f
+            for f in ["emcc", "emar", "em++", "emconfigure"]
+        ]
+        exec_files.append("emsdk")
+        for _file in exec_files:
             _exec = str(EMSDK_INSTALL_PATH / emsdk_dir / _file)
 
             st = os.stat(_exec)
